@@ -1,8 +1,3 @@
-## Hbase
-
-- Data Store
-- Tabelas divididas em partições e distribuídas no cluster
-
 ## Comandos Hbase 
 
 #### Iniciar o terminal com o hbase
