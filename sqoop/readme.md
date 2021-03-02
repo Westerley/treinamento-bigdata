@@ -1,84 +1,158 @@
 ## Sqoop
 
+Ferramenta para transferir dados entre o Hadoop e banco de dados relacionais ou mainframes
+
+<center> Sqoop = <u>SQ</u>L to Had<u>oop</u> </center>
+
+<br>
+
+[<img src="../images/sqoop.jpg">](https://bigdatagear.wordpress.com/learning/)
+
 #### Principais caracterísitcas 
 - Permite a importação de banco de dados externos.
 - Paraleliza a transferência de dados para melhorar performance e otimizar a utilização do sistema
 - Copia dados repidamente de fontes externas para o Hadoop
 
+#### Comandos
 
-1. Todos os Pokémon lendários;
-2. Todos os Pokemon de apenas um tipo;
-3. Os top 10 Pokémon mais rápidos;
-4. Os top 50 Pokémon com menos HP;
-5. Os top 100 Pokémon com maiores atributos;
+- help
+- version
+- import
+- import-all-tables
+- export
+- validation
+- job
+- metastore
+- merge
+- codegen
+- create-hive-table
+- eval
+- list-databases
+- list-tables
 
-
-sh install_sqoop.sh
-
-mysql -u root -h localhost -pEveris@2021 < pokemon.sql
-
-mysql -u root -h localhost -pEveris@2021
-
-hdfs dfs -text /user/everis-bigdata/pokemon/*.gz |more 
-
-hdfs dfs- cat /user/everis-bigdata/pokemon/1/*
-
-
-jdbc oracle
-jdbc:oracle:thin:<table_name>/<database_name>@<address>:<port>:<intance>
-
+##### Informações para conexão
 
 ```bash
-sudo -u hdfs sqoop import \
---connect jdbc:mysql://localhost/trainning \
---username root --password "Everis@2021" \
---fields-terminated-by "|" \
---split-by Generation \
---target-dir /user/everis-bigdata/pokemon \
---query 'SELECT * FROM pokemon WHERE $CONDITIONS' \
---where 'Number IS NOT NULL' \
---compress \
---num-mappers 4
+sqoop \
+--connect <connection> \
+--username <user> \
+--password <pass> \
 ```
 
-```bash
-sudo -u hdfs sqoop import \
---connect jdbc:mysql://localhost/trainning \
---username root --password "Everis@2021" \
---direct \
---table pokemon \
---target-dir /user/everis-bigdata/pokemon/1 \
---where "Legendary=1"
-```
+##### Listar banco de dados
 
 ```bash
-DROP DATABASE IF EXISTS trainning;
+sqoop list-databases \
+--connect <connection> \
+--username <user> \
+--password <pass> \
 ```
 
-```bash
-CREATE DATABASE trainning;
-```
+##### Listar tabelas
 
 ```bash
-CREATE TABLE trainning.pokemon (
-Number SMALLINT,
-Name VARCHAR(100),
-Type1 VARCHAR(100),
-Type2 VARCHAR(100),
-HP SMALLINT,
-Attack SMALLINT,
-Defense SMALLINT,
-SpAtk SMALLINT,
-SpDef SMALLINT,
-Speed SMALLINT,
-Generation TINYINT,
-Legendary BOOLEAN,
-PRIMARY KEY (Number)
-);
+sqoop list-tables \
+--connect <connection> \
+--username <user> \
+--password <pass> \
 ```
 
+
+##### Verifica a versão
+
 ```bash
-INSERT INTO trainning.pokemon
-VALUES
-(1,'Bulbasaur','Grass','Poison',45,49,49,65,65,45,1,false);
+sqoop version
+```
+
+##### Ajuda de um comando
+
+```bash
+sqoop help import
+```
+
+##### Consultar tabelas
+
+```bash
+sqoop eval \
+--connect jdbc:mysql://database/employees \
+--username <user> \
+--password <pass> \
+--query "SELECT * FROM employees LIMIT 10"
+```
+
+##### Criar tabela
+
+```bash
+sqoop eval \
+--connect jdbc:mysql://database/employees \
+--username <user> \
+--password <pass> \
+--query "CREATE TABLE setor(cod int, name varchar(30))"
+```
+
+##### Inserir linhas na tabela
+
+```bash
+sqoop eval \
+--connect jdbc:mysql://database/employees \
+--username <user> \
+--password <pass> \
+--query "INSERT INTO setor VALUES(1, 'vendas)"
+```
+
+##### Importar dados de um RDBMS
+
+```bash
+sqoop import --table employees \
+--connect jdbc:mysql://database/employees \
+--username <user> \
+--password <pass> \
+--columns "id, last_name" \
+--where "state='SP'"
+```
+
+##### Armazenar em diretório diferente 
+
+Por padrão, o sqoop armazena os dados no diretório home do HDFS.
+Ex. /user/<nome_usuario>/<nome_tabela>
+
+--target-dir: Armazena em um diretório específico
+
+```bash
+sqoop import ... --target-dir /user/root/db
+```
+
+--warehouse-dir: Armazena em um diretório base
+
+```bash
+sqoop import ... --warehouse-dir /user/root/db
+```
+
+Ex. Importar tabela departments
+--target-dir /data = /data
+--warehouse-dir /data = /data/departments
+
+##### Subrescrever o diretório
+
+```bash
+sqoop import ... --warehouse-dir /user/cloudera/db -delete-target-dir
+```
+
+##### Anexar os dados no diretório existente
+
+```bash
+sqoop import ... --warehouse-dir /user/cloudera/db -append
+```
+
+##### Delimitadores
+
+Por padrão, o sqoop gera arquivos de textos 
+- Campos delimitados por vírgula
+- Linhas terminadas por quebra de linha \n
+
+Comandos:
+
+```bash
+--fields-terminated-by <delimitador>
+--lines-terminated-by <delimitador>
 ```

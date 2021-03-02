@@ -27,6 +27,23 @@ desc formatted <table_name>;
 desc extended <table_name>;
 ```
 
+#### Consulta
+```sql
+select * from <table_name>
+<where>
+<group by>
+<having>
+<order by>
+<limit n>;
+```
+
+Aceita apenas ANSI JOINS
+inner join, left outer, right outer, full outer
+
+```sql
+create view <view_name> as select * from <table_name>
+```
+
 #### Criar base de dados
 ```sql
 create database <database_name>;
@@ -157,5 +174,31 @@ select * from <table_name>;
 ```bash
 # LOAD DATA INPATH 'user/bigdata/file.csv' OVERWRITE INTO TABLE <table_name>;
 
-LOAD DATA INPATH '/home/everis/base_localidade.csv' INTO TABLE teste.localidade partition (particao='2021-01-21');
+LOAD DATA local INPATH '/home/everis/base_localidade.csv' INTO TABLE teste.localidade partition (particao='2021-01-21');
+
+obs.: o 'local' é quando estiver no sistema de arquivo local, se estiver no hdfs não precisa colocar o 'local'
+```
+
+#### Visualizar partições de uma tabela
+
+```sql
+show partitions user;
+```
+
+#### Excluir partições de uma tabela
+
+```sql
+alter table user drop partition (city='SP');
+```
+
+#### Alterar nome da partição de uma tabela
+
+```sql
+alter table user partition city rename to partition state;
+```
+
+#### Reparar partições na tabela
+
+```bash
+msck repair table <table_name>
 ```
