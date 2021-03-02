@@ -114,6 +114,7 @@ sqoop import --table employees \
 ##### Armazenar em diretório diferente 
 
 Por padrão, o sqoop armazena os dados no diretório home do HDFS.
+
 Ex. /user/<nome_usuario>/<nome_tabela>
 
 --target-dir: Armazena em um diretório específico
@@ -129,7 +130,9 @@ sqoop import ... --warehouse-dir /user/root/db
 ```
 
 Ex. Importar tabela departments
+
 --target-dir /data = /data
+
 --warehouse-dir /data = /data/departments
 
 ##### Subrescrever o diretório
