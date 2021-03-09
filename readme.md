@@ -29,7 +29,7 @@ Para conhecer mais sobre as tecnologias:
 - [3. Hive](hive/readme.md)
     - [3.1 Comandos](hive/comandos.md)
     - [3.2 Exercícios](hive/exercicios.md)
-- [4. Sqoop](spark/readme.md)
+- [4. Sqoop](sqoop/readme.md)
     - [4.1 Exercícios](sqoop/exercicios.md)
 - [5. Spark](spark/readme.md)
     - [5.1 Exercícios](spark/exercicios.md)
