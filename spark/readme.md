@@ -146,7 +146,6 @@ spark.catalog.listTables.show()
 val tabdf = spark.sql("select * from user").show(10)
 ```
 
-
 #### Spark Submit
 
 ```bash
@@ -154,13 +153,6 @@ spark-submit
     --class org.apache.spark.examples.SparkPi 
     --master yarn-cluster $SPARK_HOME/examples/jars/example.jar 10
 ```
-
-
-
-
-curl -O https://repo1.maven.org/maven2/com/twitter/parquet-hadoop-bundle/1.6.0/parquet-hadoop-bundle-1.6.0.jar (Links para um site externo.)
-docker cp parquet-hadoop-bundle-1.6.0.jar spark:/opt/spark/jars
-
 
 ##### Inicializar
 
